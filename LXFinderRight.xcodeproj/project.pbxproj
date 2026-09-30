@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9993DD0B306CE1A50028FF9B /* LXFinderRightExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9993DD02306CE1A50028FF9B /* LXFinderRightExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		9993DC9B306CE1A70028FF9B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,13 +25,45 @@
 			remoteGlobalIDString = 9993DC8C306CE1A50028FF9B;
 			remoteInfo = LXFinderRight;
 		};
+		9993DD0D306CE1A50028FF9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9993DC85306CE1A50028FF9B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9993DD01306CE1A50028FF9B;
+			remoteInfo = LXFinderRightExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9993DD0A306CE1A50028FF9B /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9993DD0B306CE1A50028FF9B /* LXFinderRightExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		9993DC8D306CE1A50028FF9B /* LXFinderRight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LXFinderRight.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9993DC9A306CE1A70028FF9B /* LXFinderRightTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LXFinderRightTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9993DCA4306CE1A70028FF9B /* LXFinderRightUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LXFinderRightUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9993DD02306CE1A50028FF9B /* LXFinderRightExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LXFinderRightExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9993DD0E306CE1A50028FF9B /* Exceptions for "LXFinderRightExtension" folder in "LXFinderRightExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 9993DD01306CE1A50028FF9B /* LXFinderRightExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9993DC8F306CE1A50028FF9B /* LXFinderRight */ = {
@@ -43,6 +79,19 @@
 		9993DCA7306CE1A70028FF9B /* LXFinderRightUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = LXFinderRightUITests;
+			sourceTree = "<group>";
+		};
+		9993DD03306CE1A50028FF9B /* LXFinderRightExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9993DD0E306CE1A50028FF9B /* Exceptions for "LXFinderRightExtension" folder in "LXFinderRightExtension" target */,
+			);
+			path = LXFinderRightExtension;
+			sourceTree = "<group>";
+		};
+		9993DD10306CE1A50028FF9B /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -69,6 +118,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9993DD05306CE1A50028FF9B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -76,6 +132,8 @@
 			isa = PBXGroup;
 			children = (
 				9993DC8F306CE1A50028FF9B /* LXFinderRight */,
+				9993DD03306CE1A50028FF9B /* LXFinderRightExtension */,
+				9993DD10306CE1A50028FF9B /* Shared */,
 				9993DC9D306CE1A70028FF9B /* LXFinderRightTests */,
 				9993DCA7306CE1A70028FF9B /* LXFinderRightUITests */,
 				9993DC8E306CE1A50028FF9B /* Products */,
@@ -86,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				9993DC8D306CE1A50028FF9B /* LXFinderRight.app */,
+				9993DD02306CE1A50028FF9B /* LXFinderRightExtension.appex */,
 				9993DC9A306CE1A70028FF9B /* LXFinderRightTests.xctest */,
 				9993DCA4306CE1A70028FF9B /* LXFinderRightUITests.xctest */,
 			);
@@ -102,13 +161,16 @@
 				9993DC89306CE1A50028FF9B /* Sources */,
 				9993DC8A306CE1A50028FF9B /* Frameworks */,
 				9993DC8B306CE1A50028FF9B /* Resources */,
+				9993DD0A306CE1A50028FF9B /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				9993DD0C306CE1A50028FF9B /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				9993DC8F306CE1A50028FF9B /* LXFinderRight */,
+				9993DD10306CE1A50028FF9B /* Shared */,
 			);
 			name = LXFinderRight;
 			packageProductDependencies = (
@@ -163,6 +225,29 @@
 			productReference = 9993DCA4306CE1A70028FF9B /* LXFinderRightUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		9993DD01306CE1A50028FF9B /* LXFinderRightExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9993DD09306CE1A50028FF9B /* Build configuration list for PBXNativeTarget "LXFinderRightExtension" */;
+			buildPhases = (
+				9993DD04306CE1A50028FF9B /* Sources */,
+				9993DD05306CE1A50028FF9B /* Frameworks */,
+				9993DD06306CE1A50028FF9B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				9993DD03306CE1A50028FF9B /* LXFinderRightExtension */,
+				9993DD10306CE1A50028FF9B /* Shared */,
+			);
+			name = LXFinderRightExtension;
+			packageProductDependencies = (
+			);
+			productName = LXFinderRightExtension;
+			productReference = 9993DD02306CE1A50028FF9B /* LXFinderRightExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +269,9 @@
 						CreatedOnToolsVersion = 26.3;
 						TestTargetID = 9993DC8C306CE1A50028FF9B;
 					};
+					9993DD01306CE1A50028FF9B = {
+						CreatedOnToolsVersion = 26.3;
+					};
 				};
 			};
 			buildConfigurationList = 9993DC88306CE1A50028FF9B /* Build configuration list for PBXProject "LXFinderRight" */;
@@ -201,6 +289,7 @@
 			projectRoot = "";
 			targets = (
 				9993DC8C306CE1A50028FF9B /* LXFinderRight */,
+				9993DD01306CE1A50028FF9B /* LXFinderRightExtension */,
 				9993DC99306CE1A70028FF9B /* LXFinderRightTests */,
 				9993DCA3306CE1A70028FF9B /* LXFinderRightUITests */,
 			);
@@ -223,6 +312,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9993DCA2306CE1A70028FF9B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9993DD06306CE1A50028FF9B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +349,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9993DD04306CE1A50028FF9B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +368,11 @@
 			isa = PBXTargetDependency;
 			target = 9993DC8C306CE1A50028FF9B /* LXFinderRight */;
 			targetProxy = 9993DCA5306CE1A70028FF9B /* PBXContainerItemProxy */;
+		};
+		9993DD0C306CE1A50028FF9B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9993DD01306CE1A50028FF9B /* LXFinderRightExtension */;
+			targetProxy = 9993DD0D306CE1A50028FF9B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -323,7 +431,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.8;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -381,7 +489,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.8;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -394,6 +502,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LXFinderRight/LXFinderRight.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -426,6 +535,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LXFinderRight/LXFinderRight.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -461,7 +571,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FL2VP3W5B3;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.8;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.linx.LXFinderRightTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -482,7 +592,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FL2VP3W5B3;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.8;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.linx.LXFinderRightTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -533,6 +643,62 @@
 			};
 			name = Release;
 		};
+		9993DD07306CE1A50028FF9B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = LXFinderRightExtension/LXFinderRightExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FL2VP3W5B3;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LXFinderRightExtension/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.linx.LXFinderRight.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9993DD08306CE1A50028FF9B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = LXFinderRightExtension/LXFinderRightExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FL2VP3W5B3;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LXFinderRightExtension/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.linx.LXFinderRight.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -568,6 +734,15 @@
 			buildConfigurations = (
 				9993DCB5306CE1A70028FF9B /* Debug */,
 				9993DCB6306CE1A70028FF9B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9993DD09306CE1A50028FF9B /* Build configuration list for PBXNativeTarget "LXFinderRightExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9993DD07306CE1A50028FF9B /* Debug */,
+				9993DD08306CE1A50028FF9B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -1,0 +1,4 @@
+Target dependency graph (2 targets)
+Target 'LXFinderRight' in project 'LXFinderRight'
+➜ Explicit dependency on target 'LXFinderRightExtension' in project 'LXFinderRight'
+Target 'LXFinderRightExtension' in project 'LXFinderRight' (no dependencies)

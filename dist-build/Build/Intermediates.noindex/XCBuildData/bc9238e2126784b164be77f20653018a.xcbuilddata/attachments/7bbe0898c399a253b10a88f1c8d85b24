@@ -1,0 +1,49 @@
+{
+  "" : {
+    "diagnostics" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRight-primary.dia",
+    "emit-module-dependencies" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRight-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRight-primary-emit-module.dia",
+    "pch" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRight-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRight-primary.swiftdeps"
+  },
+  "/Users/qiyeyun/Study/lucus-products/LXFinderRight/LXFinderRight/LXFinderRightApp.swift" : {
+    "const-values" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRightApp.swiftconstvalues",
+    "dependencies" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRightApp.d",
+    "diagnostics" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRightApp.dia",
+    "index-unit-output-path" : "/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRightApp.o",
+    "llvm-bc" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRightApp.bc",
+    "object" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRightApp.o",
+    "swift-dependencies" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRightApp.swiftdeps",
+    "swiftmodule" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/LXFinderRightApp~partial.swiftmodule"
+  },
+  "/Users/qiyeyun/Study/lucus-products/LXFinderRight/LXFinderRight/Views/SettingsView.swift" : {
+    "const-values" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/SettingsView.swiftconstvalues",
+    "dependencies" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/SettingsView.d",
+    "diagnostics" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/SettingsView.dia",
+    "index-unit-output-path" : "/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/SettingsView.o",
+    "llvm-bc" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/SettingsView.bc",
+    "object" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/SettingsView.o",
+    "swift-dependencies" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/SettingsView.swiftdeps",
+    "swiftmodule" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/SettingsView~partial.swiftmodule"
+  },
+  "/Users/qiyeyun/Study/lucus-products/LXFinderRight/Shared/FileType.swift" : {
+    "const-values" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/FileType.swiftconstvalues",
+    "dependencies" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/FileType.d",
+    "diagnostics" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/FileType.dia",
+    "index-unit-output-path" : "/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/FileType.o",
+    "llvm-bc" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/FileType.bc",
+    "object" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/FileType.o",
+    "swift-dependencies" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/FileType.swiftdeps",
+    "swiftmodule" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/FileType~partial.swiftmodule"
+  },
+  "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/qiyeyun/Study/lucus-products/LXFinderRight/dist-build/Build/Intermediates.noindex/LXFinderRight.build/Debug/LXFinderRight.build/Objects-normal/x86_64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}

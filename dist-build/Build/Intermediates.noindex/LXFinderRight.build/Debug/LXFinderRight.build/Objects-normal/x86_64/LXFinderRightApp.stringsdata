@@ -1,0 +1,16 @@
+{
+  "source": "/Users/qiyeyun/Study/lucus-products/LXFinderRight/LXFinderRight/LXFinderRightApp.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "LXFinderRight",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 16
+        }
+      }
+    ]
+  },
+  "version": 1
+}
