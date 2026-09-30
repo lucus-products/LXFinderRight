@@ -42,7 +42,31 @@ class FinderSync: FIFinderSync {
         // 必须显式给路径。
         FIFinderSyncController.default().directoryURLs = [URL(fileURLWithPath: "/")]
 
+        logConfigDiagnostics()
+
         logger.info("扩展已启动：\(Bundle.main.bundlePath, privacy: .public)")
+    }
+
+    /// 启动时自检配置文件能不能读到，把结果写进日志。
+    ///
+    /// 存在的理由：配置读不到时 `FileTypeStore.load()` 会**静默退回内置默认列表**，
+    /// 症状只是「设置页改了但菜单不生效」——用户不会想到是权限或路径问题，
+    /// 我们也只能靠这个日志判断到底是路径解析错了还是读被拒了。
+    private func logConfigDiagnostics() {
+        let url = FileTypeStore.configURL
+        let containerHome = NSHomeDirectory()
+
+        logger.info("自检 · 沙盒容器家目录 = \(containerHome, privacy: .public)")
+        logger.info("自检 · 解析出的配置路径 = \(url.path, privacy: .public)")
+
+        do {
+            let data = try Data(contentsOf: url)
+            let types = FileTypeStore.types(from: String(data: data, encoding: .utf8) ?? "")
+            logger.info("自检 · 配置读取成功，\(data.count) 字节，解出 \(types.count) 项，首项 = \(types.first?.name ?? "无", privacy: .public)")
+        } catch {
+            let nsError = error as NSError
+            logger.error("自检 · 配置读取失败 domain=\(nsError.domain, privacy: .public) code=\(nsError.code) desc=\(nsError.localizedDescription, privacy: .public) —— 将退回内置默认列表")
+        }
     }
 
     // MARK: - 菜单

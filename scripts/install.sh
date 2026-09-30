@@ -25,6 +25,8 @@ SCHEME="LXFinderRight"
 CONFIG="${1:-Debug}"
 APP_NAME="LXFinderRight"
 EXT_ID="com.linx.LXFinderRight.Extension"
+# 扩展进程的可执行文件名，用于 pkill。必须和 target 名一致。
+EXT_PROCESS="LXFinderRightExtension"
 DERIVED="$PROJECT_ROOT/dist-build"
 INSTALLED="/Applications/$APP_NAME.app"
 
@@ -63,9 +65,13 @@ echo "📇 注册并启用扩展 ..."
 "$LSREGISTER" -f -R -trusted "$INSTALLED"
 pluginkit -e use -i "$EXT_ID" 2>/dev/null || true
 
-echo "🔄 重启 Finder ..."
+echo "🔄 重启 Finder 与扩展进程 ..."
 killall Finder 2>/dev/null || true
-sleep 2
+# **必须单独杀扩展进程**：扩展是 launchd 拉起的独立进程，不是 Finder 的子进程，
+# `killall Finder` 不会连带重启它。漏掉这步会拿着旧二进制测新代码——
+# 症状极具迷惑性（改动明明编译进去了却毫无效果），实测踩过一次。
+pkill -f "$EXT_PROCESS" 2>/dev/null || true
+sleep 3
 
 echo ""
 echo "🔍 扩展状态："
@@ -79,10 +85,32 @@ echo "$STATUS" | sed 's/^/    /'
 # pluginkit 用行首标记状态：`+` 已启用，`-` 已禁用，`!` 注册冲突。
 if echo "$STATUS" | grep -q '^+'; then
     echo ""
-    echo "✅ 就绪。在 Finder 空白处右键即可看到菜单。"
+    echo "✅ 扩展已启用。"
 else
     echo ""
     echo "⚠️  扩展未处于「已启用」状态。"
     echo "    手动可去：系统设置 → 通用 → 登录项与扩展 → 文件提供程序"
     echo "    或执行：pluginkit -e use -i $EXT_ID"
 fi
+
+# 自检：读扩展自己打的启动日志，确认它真的起来了、而且读到了配置文件。
+# 光看 pluginkit 的 `+` 不够——那只说明「注册了」，不说明进程加载的是哪个二进制。
+echo ""
+echo "🩺 读取扩展自检日志 ..."
+CHECK=""
+for _ in $(seq 1 10); do
+    CHECK="$(/usr/bin/log show --last 40s --info --debug \
+        --predicate "process == \"$EXT_PROCESS\"" --style compact 2>/dev/null \
+        | grep "自检 · " | tail -3 | sed 's/^.*自检 · /    自检 · /')"
+    [[ -n "$CHECK" ]] && break
+    sleep 1
+done
+
+if [[ -n "$CHECK" ]]; then
+    echo "$CHECK"
+else
+    echo "    （扩展还没被 Finder 拉起。去任意文件夹空白处右键一次，然后重跑本步：）"
+    echo "    /usr/bin/log show --last 1m --info --debug --predicate 'process == \"$EXT_PROCESS\"' | grep 自检"
+fi
+echo ""
+echo "提示：日志命令要用 /usr/bin/log，zsh 有个同名内建命令会把 'log stream' 吃掉。"
