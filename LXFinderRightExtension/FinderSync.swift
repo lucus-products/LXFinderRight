@@ -8,7 +8,7 @@
 //  由 launchd 按需拉起、允许空闲退出。三个约束由此而来：
 //
 //  1. `menu(for:)` 是**同步阻塞**调用——它慢，Finder 的右键菜单就卡。所以这里
-//     只允许做内存级操作，任何 I/O 都必须提前缓存好。
+//     只允许做轻量操作。当前唯一的 I/O 是读那个约 1KB 的配置文件（见下方说明）。
 //  2. action 收到的 sender **不是**我们在 menu(for:) 里创建的那个 NSMenuItem 实例，
 //     Finder 会复制菜单项，`representedObject` 在这里不可靠。所以上下文一律靠
 //     整数 `tag` 传，再映射回自己的状态表。
@@ -52,9 +52,14 @@ class FinderSync: FIFinderSync {
         // 不污染原生菜单。
         guard menuKind == .contextualMenuForContainer else { return nil }
 
-        typesForCurrentMenu = FileTypeStore.typesFromSharedDefaults()
-            .map { FileTypeStore.normalize($0) }
-            .filter { $0.enabled && !$0.ext.isEmpty }
+        // 每次都读一遍配置文件（约 1KB，位于本地 ~/Library/Application Support，走页缓存）。
+        //
+        // 这里是同步阻塞调用，本该避免 I/O。权衡下来仍然直读，因为：
+        //   · 1KB 的读 + 解码在几十微秒量级，相比 Finder 本身渲染右键菜单的耗时可忽略
+        //   · 缓存进内存就需要一套失效通知机制，否则用户改了设置要重启 Finder 才生效
+        //   · 配置文件在本地磁盘、不受云同步影响，不存在网络卷卡住的风险
+        // 如果以后配置里出现大对象或需远程读取，再改成「内存缓存 + 变更通知」。
+        typesForCurrentMenu = FileTypeStore.menuTypes(FileTypeStore.load())
 
         let menu = NSMenu(title: "")
 

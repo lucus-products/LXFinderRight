@@ -1,0 +1,19 @@
+# 构建产物
+dist-build/
+dist-free/
+dist-release/
+DerivedData/
+build/
+
+# Xcode 用户状态（每台机器不同，不该共享）
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# macOS
+.DS_Store
+
+# Swift Package Manager
+.swiftpm/
+.build/

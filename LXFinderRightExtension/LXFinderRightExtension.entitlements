@@ -2,14 +2,33 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- 扩展必须沙盒：PlugInKit 会直接拒绝加载非沙盒的 appex，
+	     日志原文 "plug-ins must be sandboxed"，症状和「扩展不出现」一模一样。 -->
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
-	<key>com.apple.security.application-groups</key>
-	<array>
-		<string>group.com.linx.LXFinderRight</string>
-	</array>
+
 	<key>com.apple.security.files.user-selected.read-only</key>
 	<true/>
+
+	<!--
+	  临时豁免：让扩展能读写任意目录。
+
+	  两处用到：
+	  1. 把新文件写进用户正在浏览的目录（沙盒里默认写不了）
+	  2. 读主 App 写下的配置文件（主 App 非沙盒，写在真实家目录下）
+
+	  为什么不用 App Group 共享配置：App Group 是「能力」，必须由 provisioning
+	  profile 背书，而自动签名生成的是**开发用 profile**——绑定设备 UUID（只认本机）
+	  且 7 天过期，装到别人机器上跑不起来。用临时豁免 + 共享文件则完全不需要
+	  capability，包也干净。
+
+	  代价与后续：商用竞品（Beyond Compare / WPS / 百度网盘）的 appex 都没有写权限，
+	  重活交给非沙盒的宿主进程——那才是最终形态。升级路径是把写盘挪到内嵌在 appex 的
+	  Contents/XPCServices/ 下的 XPC helper，扩展侧只发请求，菜单代码不用动。
+
+	  注意：临时豁免 entitlement 会被 Mac App Store 拒审。本项目走独立分发，
+	  不受 App Review 约束，可以用。
+	-->
 	<key>com.apple.security.temporary-exception.files.absolute-path.read-write</key>
 	<array>
 		<string>/</string>

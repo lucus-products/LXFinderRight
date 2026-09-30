@@ -2,7 +2,7 @@
 //  FileType.swift
 //  Shared
 //
-//  「新建文件」里的一种文件类型（菜单里的一项）。
+//  「新建文件」里的一种文件类型（菜单里的一项），以及它的持久化。
 //
 //  这个文件同时编进主 App（设置页增删改）和 Finder 扩展（渲染菜单）两个 target，
 //  所以不能 import AppKit 之外有副作用的东西，也不能依赖任一侧的运行时状态。
@@ -41,9 +41,8 @@ struct FileType: Codable, Identifiable, Hashable {
 
     /// 宽容解码：单个字段缺失或类型不对时退回默认值，而不是让整份配置解码失败。
     ///
-    /// 两个场景会用到：以后给 FileType 加字段（老 JSON 里没有），以及用户手改
-    /// UserDefaults 里的 JSON。硬失败会让整个列表被静默重置成默认值，
-    /// 用户配了半天的类型全丢。
+    /// 两个场景会用到：以后给 FileType 加字段（老 JSON 里没有），以及用户手改配置文件。
+    /// 硬失败会让整个列表被静默重置成默认值，用户配了半天的类型全丢。
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = (try? container.decode(UUID.self, forKey: .id)) ?? UUID()
@@ -57,18 +56,32 @@ struct FileType: Codable, Identifiable, Hashable {
 
 enum FileTypeStore {
 
-    /// App Group：主 App 与 Finder 扩展共享配置的唯一通道。
+    /// 配置文件相对家目录的路径。
     ///
-    /// 两侧都是沙盒进程，直接用 `UserDefaults.standard` 读写的是各自的容器，
-    /// 互相看不见。App Group 是官方提供的跨进程共享方式。
-    static let appGroupID = "group.com.linx.LXFinderRight"
+    /// 为什么不用 App Group：App Group 是「能力」（capability），必须由 provisioning
+    /// profile 背书。自动签名生成的是开发用 profile，会**绑定设备 UUID**（只认本机）
+    /// 且**7 天过期**——装到别人机器上跑不起来，发出去的包很快变砖。
+    /// 改用一个共享文件后，两个 target 都不需要任何 capability，分发干净。
+    static let configRelativePath = "Library/Application Support/LXFinderRight/fileTypes.json"
 
-    /// 存进 App Group UserDefaults 的键，值是 `[FileType]` 的 JSON 字符串。
-    static let defaultsKey = "fileTypes"
+    /// 真实家目录。
+    ///
+    /// **不能用 `FileManager.urls(for:in:)` 或 `NSHomeDirectory()`**：Finder 扩展是沙盒
+    /// 进程，这两个 API 在它里面返回的是沙盒容器路径（`~/Library/Containers/.../Data`），
+    /// 而主 App 是非沙盒的，同一个 API 返回真实家目录。两边解析出不同的路径，
+    /// 配置文件就永远对不上——而且不报错，只表现成「改了设置没反应」。
+    ///
+    /// `getpwuid` 查的是系统账户数据库，不受沙盒影响，两边必然一致。
+    static var realHomeDirectory: URL {
+        if let pw = getpwuid(getuid()), let dir = pw.pointee.pw_dir {
+            return URL(fileURLWithPath: String(cString: dir), isDirectory: true)
+        }
+        return URL(fileURLWithPath: NSHomeDirectory(), isDirectory: true)
+    }
 
-    /// 共享的 UserDefaults。拿不到时返回 nil（App Group 没配好），调用方各自降级。
-    static var sharedDefaults: UserDefaults? {
-        UserDefaults(suiteName: appGroupID)
+    /// 配置文件位置。主 App 与 Finder 扩展读写的是同一个文件。
+    static var configURL: URL {
+        realHomeDirectory.appendingPathComponent(configRelativePath)
     }
 
     // MARK: - 默认列表
@@ -92,22 +105,17 @@ enum FileTypeStore {
     ///
     /// 不能写成 `UUID()`：默认列表会被反复解码去做 SwiftUI 的 ForEach 身份比对，
     /// 每次现生成新 id 会让列表身份抖动，导致绑定串行、动画错乱。
-    /// 这里用固定前缀 + 序号拼出跨进程稳定的值。
     private static func defaultID(_ n: Int) -> UUID {
         // 强制解包安全：格式串固定，n 落在 %012d 范围内时一定是合法 UUID 字面量。
         UUID(uuidString: String(format: "1F000000-0000-4000-8000-%012d", n))!
     }
 
-    // MARK: - 读写
+    // MARK: - 解码
 
-    /// 空串和解码失败都退回默认列表。
+    /// 空内容和解码失败都退回默认列表。
     ///
-    /// 空串代表「首次运行」——`@AppStorage` 的默认值不会写进 UserDefaults，
-    /// 所以键不存在时读到的就是 `""`，而 `""` 不是合法 JSON，两种「没有配置」
-    /// 的情况天然落在同一个分支。
-    ///
-    /// 能解出空数组 `[]` 则返回空：那是用户主动把类型删光了，要尊重，
-    /// 不能拿默认值盖回去。
+    /// 「文件不存在」代表首次运行；「能解出空数组 `[]`」代表用户主动把类型删光了，
+    /// 这个要尊重，不能拿默认值盖回去。
     static func types(from json: String) -> [FileType] {
         guard !json.isEmpty,
               let data = json.data(using: .utf8),
@@ -116,28 +124,44 @@ enum FileTypeStore {
         return list
     }
 
-    /// 从共享 UserDefaults 直接读列表。
-    static func typesFromSharedDefaults() -> [FileType] {
-        types(from: sharedDefaults?.string(forKey: defaultsKey) ?? "")
+    /// 从配置文件读。文件不存在或读不出来则返回默认列表，**不抛错**——
+    /// 首次运行时文件本来就不存在；扩展侧更是任何时候都必须能渲染出菜单，
+    /// 不能因为配置读不到就整个菜单消失。
+    static func load() -> [FileType] {
+        guard let data = try? Data(contentsOf: configURL) else { return defaultTypes }
+        guard let list = try? JSONDecoder().decode([FileType].self, from: data) else {
+            return defaultTypes
+        }
+        return list
     }
 
     /// 菜单里实际要显示的类型：规范化后，保留「启用」且「扩展名非空」的项。
     ///
     /// 扩展名为空的是用户在设置页点了「添加类型」还没填完的草稿，
     /// 拿去建文件会得到一个没有扩展名的文件，不该出现在菜单里。
-    static func menuTypes(from json: String) -> [FileType] {
-        types(from: json)
-            .map { normalize($0) }
-            .filter { $0.enabled && !$0.ext.isEmpty }
+    static func menuTypes(_ list: [FileType]) -> [FileType] {
+        list.map { normalize($0) }.filter { $0.enabled && !$0.ext.isEmpty }
     }
 
-    /// 编码成存进 UserDefaults 的 JSON。失败返回空串（而非半截 JSON），
-    /// 让读取端退回默认值。
-    static func encode(_ types: [FileType]) -> String {
-        guard let data = try? JSONEncoder().encode(types),
+    // MARK: - 编码与保存
+
+    /// 编码成写进配置文件的 JSON。失败返回空串（而非半截 JSON）。
+    static func encode(_ list: [FileType]) -> String {
+        guard let data = try? JSONEncoder().encode(list),
               let json = String(data: data, encoding: .utf8)
         else { return "" }
         return json
+    }
+
+    /// 写回配置文件。原子写入，避免扩展读到写了一半的半截 JSON。
+    static func save(_ list: [FileType]) throws {
+        let url = configURL
+        try FileManager.default.createDirectory(at: url.deletingLastPathComponent(),
+                                                withIntermediateDirectories: true)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        let data = try encoder.encode(list)
+        try data.write(to: url, options: .atomic)
     }
 
     // MARK: - 规范化

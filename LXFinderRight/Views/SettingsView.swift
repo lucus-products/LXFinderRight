@@ -10,21 +10,15 @@ import SwiftUI
 
 struct SettingsView: View {
 
-    /// 与 Finder 扩展读写**同一个键、同一个 App Group**，改动才能被扩展看到。
-    ///
-    /// 必须显式指定 store：`@AppStorage` 默认走 `UserDefaults.standard`，
-    /// 那是主 App 自己沙盒容器里的域，扩展根本读不到。
-    @AppStorage(FileTypeStore.defaultsKey, store: FileTypeStore.sharedDefaults)
-    private var fileTypesJSON = ""
-
-    /// 本地编辑态。不直接把 `fileTypesJSON` 当 Binding 用——那样每敲一个字符都会
-    /// 写一次 UserDefaults，而且扩展侧会在你打字的中途读到半成品配置。所以本地编辑、
-    /// 防抖写回。
+    /// 本地编辑态。不每敲一个字符就写一次文件——那样既费 I/O，扩展侧也会在你打字的
+    /// 中途读到半成品配置。所以本地编辑、防抖写回。
     @State private var types: [FileType] = []
     /// 防抖任务：连续输入时只保留最后一次写回。
     @State private var saveTask: Task<Void, Never>?
     /// 最近一次「已同步」的 JSON，用来区分「用户改了」和「onAppear 刚装载」。
     @State private var lastSyncedJSON = ""
+    /// 写盘失败提示。配置写不进去必须让用户看见，否则会表现成「设置改了但没生效」。
+    @State private var saveError: String?
 
     var body: some View {
         Form {
@@ -56,6 +50,10 @@ struct SettingsView: View {
                 Text("内置的 docx / xlsx / pptx 会创建可直接双击打开的空白文档；其它格式创建空文件。也可以为某个类型指定自己的模板文件。")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                Text("配置文件：\(FileTypeStore.configURL.path)")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+                    .textSelection(.enabled)
             }
         }
         .formStyle(.grouped)
@@ -63,11 +61,15 @@ struct SettingsView: View {
         .onChange(of: types) { newValue in scheduleSave(newValue) }
         .onDisappear { saveNow() }
         .onAppear {
-            types = FileTypeStore.types(from: fileTypesJSON)
+            types = FileTypeStore.load()
             // 把当前值记成「已同步」。不记的话，`onAppear` 的装载会触发 `onChange`，
-            // 于是「只是打开了一下窗口」就会把当前值固化写回 UserDefaults，
-            // 以后版本新增的默认项对老用户就再也看不到了。
+            // 于是「只是打开了一下窗口」就会把当前值固化写回文件。
             lastSyncedJSON = encoded(types)
+        }
+        .alert("配置保存失败", isPresented: .constant(saveError != nil)) {
+            Button("好") { saveError = nil }
+        } message: {
+            Text(saveError ?? "")
         }
     }
 
@@ -95,12 +97,11 @@ struct SettingsView: View {
                 .accessibilityLabel("扩展名")
 
             templateButton(for: type)
-
             rowButtons(type.wrappedValue)
         }
     }
 
-    /// 模板选择按钮。选了模板就显示回形针高亮，没选就是空心——一眼看出哪些类型用了自定义模板。
+    /// 模板选择按钮。选了模板就换成带省略号的图标，没选是空心——一眼看出哪些类型用了自定义模板。
     private func templateButton(for type: Binding<FileType>) -> some View {
         let hasTemplate = !(type.wrappedValue.templatePath ?? "").isEmpty
         return Button {
@@ -112,7 +113,7 @@ struct SettingsView: View {
         .buttonStyle(.bordered)
         .controlSize(.small)
         .help(hasTemplate
-              ? "自定义模板：\(type.wrappedValue.templatePath ?? "")"
+              ? "自定义模板：\(type.wrappedValue.templatePath ?? "")\n（点按可重选）"
               : "选用自定义模板文件（不选则创建空白文件）")
         .accessibilityLabel("选择模板")
     }
@@ -181,7 +182,7 @@ struct SettingsView: View {
     // MARK: - 写回
 
     /// 规范化的 JSON。装填哨兵与写回**必须都走这个函数**——两侧口径不一致的话
-    /// 哨兵比对会永远判成「变了」，一打开设置页就把当前值写回 UserDefaults。
+    /// 哨兵比对会永远判成「变了」，一打开设置页就把当前值写回文件。
     private func encoded(_ list: [FileType]) -> String {
         FileTypeStore.encode(list.map { FileTypeStore.normalize($0) })
     }
@@ -194,10 +195,10 @@ struct SettingsView: View {
 
         saveTask?.cancel()
         saveTask = Task {
-            // 防抖：连续输入时只保留最后一次，避免每敲一个字符就写一次 UserDefaults。
+            // 防抖：连续输入时只保留最后一次，避免每敲一个字符就写一次文件。
             try? await Task.sleep(for: .milliseconds(400))
             guard !Task.isCancelled else { return }
-            commit(json)
+            commit(newValue, json: json)
         }
     }
 
@@ -207,12 +208,17 @@ struct SettingsView: View {
         saveTask = nil
         let json = encoded(types)
         guard json != lastSyncedJSON else { return }
-        commit(json)
+        commit(types, json: json)
     }
 
-    private func commit(_ json: String) {
-        lastSyncedJSON = json
-        fileTypesJSON = json
+    private func commit(_ list: [FileType], json: String) {
+        do {
+            try FileTypeStore.save(list.map { FileTypeStore.normalize($0) })
+            lastSyncedJSON = json
+        } catch {
+            // 不更新哨兵：这样用户下次改动时还会再试一次，而不是以为已经存好了。
+            saveError = error.localizedDescription
+        }
     }
 }
 
